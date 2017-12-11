@@ -1,0 +1,13 @@
+interface Identifiable {
+    id: Int!
+}
+
+type Channel implements Identifiable {
+    id: Int!
+    name: String!
+}
+
+type Query {
+    channel(id:Int!): Channel
+    channels: [Channel]
+}
