@@ -9,6 +9,8 @@ import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 import java.io.Console._
 import scala.concurrent.Await
 import scala.language.postfixOps
+import ch.megard.akka.http.cors.scaladsl.CorsDirectives._
+
 
 object Server extends App{
 
@@ -23,9 +25,10 @@ object Server extends App{
   logger("Starting GraphQL server!")
   scala.sys.addShutdownHook(() -> shutdown())
   
-  val route: Route = (post & path("graphql")){
+  val route: Route =  cors(){
+    (post & path("graphql")){
     entity(as[JsValue]){ requestJson => GraphQLServer.endpoint(requestJson)
-      }
+    }}
   }~{
     getFromResource("graphiql.html")
   }
